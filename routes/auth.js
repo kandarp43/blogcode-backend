@@ -9,27 +9,6 @@ const requireLogin = require('../middleware/requireLogin');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 
-router.post('/unverified-users', (req, res) => {
-  console.log('unverified users');
-  const { datenow } = req.body;
-  User.deleteMany(
-    {
-      $and: [
-        { expireEmailToken: { $lte: datenow } },
-        { expireEmailToken: { $ne: null } },
-        { isVerified: false },
-      ],
-    },
-    (error, data) => {
-      if (!error) {
-        return;
-      } else {
-        console.log('done');
-      }
-    }
-  );
-});
-
 const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
@@ -40,6 +19,20 @@ const transporter = nodemailer.createTransport(
 
 router.get('/protected', requireLogin, (req, res) => {
   res.send('hello User');
+});
+
+router.post('/unverified-users', (req, res) => {
+  console.log('unverified users');
+  const { datenow } = req.body;
+  User.deleteMany({
+    $and: [
+      { expireEmailToken: { $lte: datenow } },
+      { expireEmailToken: { $ne: null } },
+      { isVerified: false },
+    ],
+  })
+    .then((data) => console.log(data))
+    .catch((err) => console.log(err));
 });
 
 router.post('/signup', async (req, res) => {
