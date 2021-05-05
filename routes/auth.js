@@ -34,7 +34,7 @@ router.post('/unverified-users', (req, res) => {
   })
     .then((data) => {
       if (data) {
-        return res.status(422).json({ message: 'unverified users removed' })
+        return res.status(200).json({ message: 'unverified users removed' })
       }
     })
     .catch((err) => console.log(err))
