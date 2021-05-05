@@ -17,6 +17,7 @@ router.post('/unverified-users', (req, res) => {
       $and: [
         { expireEmailToken: { $lte: datenow } },
         { expireEmailToken: { $ne: null } },
+        { isVerified: false },
       ],
     },
     (error, data) => {
