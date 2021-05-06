@@ -26,7 +26,7 @@ const postSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: { createdAt: 'created_on' } }
+  { timestamps: { createdAt: 'created_on', updatedAt: false } }
 )
 
 mongoose.model('Post', postSchema)
